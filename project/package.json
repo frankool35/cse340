@@ -1,0 +1,22 @@
+{
+    "name": "cse340",
+    "version": "1.0.0",
+    "description": "CSE340 Initial Site Creation",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "nodemon server.js"
+    },
+    "keywords": [],
+    "author": "Etim Frank",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^16.6.1",
+        "ejs": "^3.1.10",
+        "express": "^5.1.0"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    }
+}
