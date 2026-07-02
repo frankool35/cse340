@@ -1,9 +1,54 @@
 <%- include("partials/header", { title: title }) %>
 
-    <h2>Organizations</h2>
+    <main>
 
-    <p>List of community organizations.</p>
+        <h2>Community Organizations</h2>
 
-    <img src="/images/image1.png" alt="Community Organization" width="400">
+        <p>
+            These organizations work with volunteers to make a positive impact in
+            their communities. Explore their missions and discover ways to get involved.
+        </p>
+
+        <section class="organization-grid">
+
+            <article class="card">
+                <img src="/images/bright_future_foundation.png" alt="Bright Future Foundation">
+
+                <h3>Bright Future Foundation</h3>
+
+                <ul>
+                    <li>Youth Mentorship</li>
+                    <li>After-school Tutoring</li>
+                    <li>Scholarship Support</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <img src="/images/green_harvest_initiative.png" alt="Green Harvest Initiative">
+
+                <h3>Green Harvest Initiative</h3>
+
+                <ul>
+                    <li>Tree Planting</li>
+                    <li>Community Gardening</li>
+                    <li>Environmental Education</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <img src="/images/unity_serve_network.png" alt="Unity Serve Network">
+
+                <h3>Unity Serve Network</h3>
+
+                <ul>
+                    <li>Food Distribution</li>
+                    <li>Neighborhood Cleanups</li>
+                    <li>Senior Citizen Assistance</li>
+                </ul>
+            </article>
+
+        </section>
+
+    </main>
 
     <%- include("partials/footer") %>
