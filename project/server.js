@@ -4,6 +4,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from "./src/models/organizations.js";
+import { getAllProjects } from "./src/models/projects.js";
+import { getAllCategories } from "./src/models/categories.js";
 
 
 dotenv.config();
@@ -41,12 +43,22 @@ app.get("/organizations", async (req, res) => {
     });
 });
 
-app.get("/projects", (req, res) => {
-    res.render("projects", { title: "Projects" });
+app.get("/projects", async (req, res) => {
+    const projects = await getAllProjects();
+
+    res.render("projects", {
+        title: "Projects",
+        projects
+    });
 });
 
-app.get("/categories", (req, res) => {
-    res.render("categories", { title: "Categories" });
+app.get("/categories", async (req, res) => {
+    const categories = await getAllCategories();
+
+    res.render("categories", {
+        title: "Categories",
+        categories
+    });
 });
 
 // Start server

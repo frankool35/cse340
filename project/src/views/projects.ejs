@@ -1,11 +1,31 @@
 <%- include("partials/header", { title: title }) %>
 
-    <h2>Service Projects</h2>
+    <main>
 
-    <ul>
-        <li>Neighborhood Cleanup</li>
-        <li>Food Drive</li>
-        <li>Tree Planting</li>
-    </ul>
+        <h2>
+            <%= title %>
+        </h2>
+
+        <p>Explore our current community service projects.</p>
+
+        <ul>
+            <% projects.forEach(project=> { %>
+
+                <li>
+                    <strong>
+                        <%= project.project_name %>
+                    </strong><br>
+
+                    <%= project.description %><br>
+
+                        <strong>Start Date:</strong>
+                    <strong>Start Date:</strong>
+                    <%= project.start_date ? project.start_date.toISOString().split("T")[0] : "N/A" %>
+                </li>
+
+                <% }) %>
+        </ul>
+
+    </main>
 
     <%- include("partials/footer") %>
