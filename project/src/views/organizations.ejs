@@ -11,41 +11,28 @@
 
         <section class="organization-grid">
 
-            <article class="card">
-                <img src="/images/bright_future_foundation.png" alt="Bright Future Foundation">
+            <% organizations.forEach(organization=> { %>
 
-                <h3>Bright Future Foundation</h3>
+                <article class="card">
 
-                <ul>
-                    <li>Youth Mentorship</li>
-                    <li>After-school Tutoring</li>
-                    <li>Scholarship Support</li>
-                </ul>
-            </article>
+                    <img src="/images/<%= organization.logo_filename %>" alt="<%= organization.name %>">
 
-            <article class="card">
-                <img src="/images/green_harvest_initiative.png" alt="Green Harvest Initiative">
+                    <h3>
+                        <%= organization.name %>
+                    </h3>
 
-                <h3>Green Harvest Initiative</h3>
+                    <p>
+                        <%= organization.description %>
+                    </p>
 
-                <ul>
-                    <li>Tree Planting</li>
-                    <li>Community Gardening</li>
-                    <li>Environmental Education</li>
-                </ul>
-            </article>
+                    <p>
+                        <strong>Contact Email:</strong><br>
+                        <%= organization.contact_email %>
+                    </p>
 
-            <article class="card">
-                <img src="/images/unity_serve_network.png" alt="Unity Serve Network">
+                </article>
 
-                <h3>Unity Serve Network</h3>
-
-                <ul>
-                    <li>Food Distribution</li>
-                    <li>Neighborhood Cleanups</li>
-                    <li>Senior Citizen Assistance</li>
-                </ul>
-            </article>
+                <% }); %>
 
         </section>
 
