@@ -1,0 +1,64 @@
+<%- include("partials/header", { title: title }) %>
+
+    <main>
+
+        <section class="organization-details">
+
+            <img src="/images/<%= organizationDetails.logo_filename %>" alt="<%= organizationDetails.name %>">
+
+            <h2>
+                <%= organizationDetails.name %>
+            </h2>
+
+            <p>
+                <%= organizationDetails.description %>
+            </p>
+
+            <p>
+                <strong>Contact Email:</strong>
+                <%= organizationDetails.contact_email %>
+            </p>
+
+        </section>
+
+        <hr>
+
+        <section>
+
+            <h3>Service Projects</h3>
+
+            <% if (projects.length> 0) { %>
+
+                <ul>
+
+                    <% projects.forEach(project=> { %>
+
+                        <li>
+
+                            <a href="/project/<%= project.project_id %>">
+                                <%= project.project_name %>
+                            </a>
+
+                            <% if (project.start_date) { %>
+                                (<%= new Date(project.start_date).toLocaleDateString() %>)
+                                    <% } %>
+
+                        </li>
+
+                        <% }) %>
+
+                </ul>
+
+                <% } else { %>
+
+                    <p>
+                        No service projects are currently associated with this organization.
+                    </p>
+
+                    <% } %>
+
+        </section>
+
+    </main>
+
+    <%- include("partials/footer") %>
