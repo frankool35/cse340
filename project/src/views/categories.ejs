@@ -6,19 +6,30 @@
             <%= title %>
         </h2>
 
-        <p>Browse the different categories of community service projects.</p>
+        <p>
+            Browse the different categories of community service projects.
+        </p>
 
         <ul>
+
             <% categories.forEach(category=> { %>
 
                 <li>
-                    <strong>
-                        <%= category.category_name %>
-                    </strong><br>
-                    <%= category.description %>
+
+                    <h3>
+                        <a href="/category/<%= category.category_id %>">
+                            <%= category.category_name %>
+                        </a>
+                    </h3>
+
+                    <p>
+                        <%= category.description %>
+                    </p>
+
                 </li>
 
                 <% }) %>
+
         </ul>
 
     </main>

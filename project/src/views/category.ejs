@@ -1,0 +1,52 @@
+<%- include("partials/header", { title: title }) %>
+
+    <main>
+
+        <h2>
+            <%= categoryDetails.category_name %>
+        </h2>
+
+        <p>
+            <%= categoryDetails.description %>
+        </p>
+
+        <h3>Projects in this Category</h3>
+
+        <% if (projects.length> 0) { %>
+
+            <ul>
+
+                <% projects.forEach(project=> { %>
+
+                    <li>
+
+                        <a href="/project/<%= project.project_id %>">
+                            <%= project.title %>
+                        </a>
+
+                        <br>
+
+                        <small>
+                            <%= project.date.toLocaleDateString() %> —
+                                <%= project.location %>
+                        </small>
+
+                    </li>
+
+                    <% }) %>
+
+            </ul>
+
+            <% } else { %>
+
+                <p>No projects are available for this category.</p>
+
+                <% } %>
+
+                    <p>
+                        <a href="/categories">← Back to Categories</a>
+                    </p>
+
+    </main>
+
+    <%- include("partials/footer") %>

@@ -6,25 +6,48 @@
             <%= title %>
         </h2>
 
-        <p>Explore our current community service projects.</p>
+        <p>
+            Browse the next five upcoming community service projects.
+        </p>
 
-        <ul>
+        <section class="project-grid">
+
             <% projects.forEach(project=> { %>
 
-                <li>
-                    <strong>
-                        <%= project.project_name %>
-                    </strong><br>
+                <article class="card">
 
-                    <%= project.description %><br>
+                    <h3>
+                        <a href="/project/<%= project.project_id %>">
+                            <%= project.title %>
+                        </a>
+                    </h3>
 
-                        <strong>Start Date:</strong>
-                    <strong>Start Date:</strong>
-                    <%= project.start_date ? project.start_date.toISOString().split("T")[0] : "N/A" %>
-                </li>
+                    <p>
+                        <%= project.description %>
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        <%= project.date.toLocaleDateString() %>
+                    </p>
+
+                    <p>
+                        <strong>Location:</strong>
+                        <%= project.location %>
+                    </p>
+
+                    <p>
+                        Organization:
+                        <a href="/organization/<%= project.organization_id %>">
+                            <%= project.organization_name %>
+                        </a>
+                    </p>
+
+                </article>
 
                 <% }) %>
-        </ul>
+
+        </section>
 
     </main>
 
