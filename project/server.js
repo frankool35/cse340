@@ -6,10 +6,17 @@ import { fileURLToPath } from "url";
 import { testConnection } from "./src/models/db.js";
 import router from "./src/routes.js";
 
+
+import session from "express-session";
+import flash from "./src/middleware/flash.js";
+
+
 dotenv.config();
 
 console.log("DB_URL =", process.env.DB_URL);
 console.log("NODE_ENV =", process.env.NODE_ENV);
+
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const app = express();
 
@@ -22,6 +29,20 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 // View engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src", "views"));
+
+
+// Session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 60 * 60 * 1000
+    }
+}));
+
+// Flash middleware
+app.use(flash);
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
@@ -36,6 +57,14 @@ app.use((req, res, next) => {
     res.locals.NODE_ENV = NODE_ENV;
     next();
 });
+
+
+app.use(express.urlencoded({
+    extended: true
+}));
+
+app.use(express.json());
+
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));

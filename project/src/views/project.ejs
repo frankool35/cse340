@@ -29,14 +29,36 @@
         </p>
 
         <p>
-            <strong>Category:</strong>
-            <a href="/category/<%= category.category_id %>">
-                <%= category.category_name %>
+            <strong>Categories:</strong><br>
+
+            <% if (categories.length> 0) { %>
+
+                <% categories.forEach(category=> { %>
+
+                    <a href="/category/<%= category.category_id %>">
+                        <%= category.category_name %>
+                    </a><br>
+
+                    <% }) %>
+
+                        <% } else { %>
+
+                            No categories assigned.
+
+                            <% } %>
+
+        </p>
+
+        <p>
+            <a href="/assign-categories/<%= project.project_id %>">
+                Assign Categories
             </a>
         </p>
 
         <p>
-            <a href="/projects">← Back to Projects</a>
+            <a href="/projects">
+                ← Back to Projects
+            </a>
         </p>
 
     </main>

@@ -2,6 +2,7 @@
 -- DROP TABLES
 -- =========================================
 
+DROP TABLE IF EXISTS project_category;
 DROP TABLE IF EXISTS project;
 DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS organization;
@@ -40,14 +41,30 @@ CREATE TABLE project (
     location VARCHAR(150) NOT NULL,
 
     organization_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
 
     CONSTRAINT fk_project_organization
         FOREIGN KEY (organization_id)
         REFERENCES organization(organization_id)
+        ON DELETE CASCADE
+);
+
+-- =========================================
+-- PROJECT_CATEGORY TABLE
+-- =========================================
+
+CREATE TABLE project_category (
+
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    CONSTRAINT fk_pc_project
+        FOREIGN KEY (project_id)
+        REFERENCES project(project_id)
         ON DELETE CASCADE,
 
-    CONSTRAINT fk_project_category
+    CONSTRAINT fk_pc_category
         FOREIGN KEY (category_id)
         REFERENCES category(category_id)
         ON DELETE CASCADE
@@ -104,7 +121,7 @@ VALUES
 -- =========================================
 
 INSERT INTO project
-(title, description, date, location, organization_id, category_id)
+(title, description, date, location, organization_id)
 VALUES
 
 (
@@ -112,7 +129,6 @@ VALUES
 'Construction of a learning center for children.',
 '2026-08-10',
 'Lagos',
-1,
 1
 ),
 
@@ -121,7 +137,6 @@ VALUES
 'Renovating classrooms and libraries.',
 '2026-08-20',
 'Ibadan',
-1,
 1
 ),
 
@@ -130,7 +145,6 @@ VALUES
 'Providing educational scholarships.',
 '2026-09-01',
 'Abuja',
-1,
 1
 ),
 
@@ -139,7 +153,6 @@ VALUES
 'Expansion of community gardens.',
 '2026-08-15',
 'Port Harcourt',
-2,
 2
 ),
 
@@ -148,7 +161,6 @@ VALUES
 'Planting thousands of trees.',
 '2026-08-25',
 'Enugu',
-2,
 2
 ),
 
@@ -157,7 +169,6 @@ VALUES
 'Cleaning polluted rivers.',
 '2026-09-12',
 'Calabar',
-2,
 2
 ),
 
@@ -166,7 +177,6 @@ VALUES
 'Food distribution for vulnerable families.',
 '2026-08-18',
 'Lagos',
-3,
 3
 ),
 
@@ -175,7 +185,6 @@ VALUES
 'Community medical screening.',
 '2026-09-05',
 'Uyo',
-3,
 3
 ),
 
@@ -184,7 +193,6 @@ VALUES
 'Training youth volunteers.',
 '2026-09-18',
 'Benin City',
-3,
 3
 ),
 
@@ -193,6 +201,23 @@ VALUES
 'Cleaning streets and public spaces.',
 '2026-10-01',
 'Abeokuta',
-3,
 3
 );
+
+-- =========================================
+-- PROJECT CATEGORY ASSIGNMENTS
+-- =========================================
+
+INSERT INTO project_category
+(project_id, category_id)
+VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,2),
+(5,2),
+(6,2),
+(7,3),
+(8,3),
+(9,3),
+(10,3);

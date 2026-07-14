@@ -61,8 +61,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
             description,
             date,
             location,
-            organization_id,
-            category_id
+            organization_id
         FROM project
         WHERE organization_id = $1
         ORDER BY date;
@@ -79,16 +78,17 @@ const getProjectsByOrganizationId = async (organizationId) => {
 const getProjectsByCategoryId = async (categoryId) => {
     const query = `
         SELECT
-            project_id,
-            title,
-            description,
-            date,
-            location,
-            organization_id,
-            category_id
-        FROM project
-        WHERE category_id = $1
-        ORDER BY date;
+            p.project_id,
+            p.title,
+            p.description,
+            p.date,
+            p.location,
+            p.organization_id
+        FROM project p
+        INNER JOIN project_category pc
+            ON p.project_id = pc.project_id
+        WHERE pc.category_id = $1
+        ORDER BY p.date;
     `;
 
     const result = await db.query(query, [categoryId]);
@@ -97,23 +97,79 @@ const getProjectsByCategoryId = async (categoryId) => {
 };
 
 // =========================================
-// Get category for one project
+// Create a new project
 // =========================================
-const getCategoryByProjectId = async (projectId) => {
+const createProject = async (
+    title,
+    description,
+    location,
+    date,
+    organizationId
+) => {
+
+    const query = `
+        INSERT INTO project
+        (
+            title,
+            description,
+            location,
+            date,
+            organization_id
+        )
+        VALUES
+        (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5
+        )
+        RETURNING project_id;
+    `;
+
+    const result = await db.query(query, [
+        title,
+        description,
+        location,
+        date,
+        organizationId
+    ]);
+
+    if (result.rows.length === 0) {
+        throw new Error("Failed to create project");
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === "true") {
+        console.log(
+            "Created new project with ID:",
+            result.rows[0].project_id
+        );
+    }
+
+    return result.rows[0].project_id;
+};
+
+// =========================================
+// Get categories assigned to one project
+// =========================================
+const getCategoriesByProjectId = async (projectId) => {
+
     const query = `
         SELECT
             c.category_id,
             c.category_name,
             c.description
         FROM category c
-        INNER JOIN project p
-            ON c.category_id = p.category_id
-        WHERE p.project_id = $1;
+        INNER JOIN project_category pc
+            ON c.category_id = pc.category_id
+        WHERE pc.project_id = $1
+        ORDER BY c.category_name;
     `;
 
     const result = await db.query(query, [projectId]);
 
-    return result.rows.length > 0 ? result.rows[0] : null;
+    return result.rows;
+
 };
 
 // =========================================
@@ -124,5 +180,6 @@ export {
     getProjectDetails,
     getProjectsByOrganizationId,
     getProjectsByCategoryId,
-    getCategoryByProjectId
+    getCategoriesByProjectId,
+    createProject
 };

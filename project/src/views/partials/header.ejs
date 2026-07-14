@@ -25,3 +25,22 @@
 
         <hr>
     </header>
+
+    <!-- Flash Messages -->
+    <% const messages=flash(); %>
+
+        <% Object.keys(messages).forEach(type=> { %>
+
+            <% if (messages[type].length> 0) { %>
+
+                <% messages[type].forEach(message=> { %>
+
+                    <div class="alert <%= type %>">
+                        <%= message %>
+                    </div>
+
+                    <% }); %>
+
+                        <% } %>
+
+                            <% }); %>
