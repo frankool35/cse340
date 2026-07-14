@@ -15,7 +15,7 @@ dotenv.config();
 
 console.log("DB_URL =", process.env.DB_URL);
 console.log("NODE_ENV =", process.env.NODE_ENV);
-console.log("SESSION_SECRET =", process.env.SESSION_SECRET);
+
 
 const SESSION_SECRET =
     process.env.SESSION_SECRET || "development-secret";
