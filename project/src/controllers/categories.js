@@ -1,15 +1,37 @@
-
 import {
     getAllCategories,
     getCategoryDetails,
     getCategoriesByServiceProjectId,
-    updateCategoryAssignments
+    updateCategoryAssignments,
+    createCategory,
+    updateCategory
 } from "../models/categories.js";
 
 import {
     getProjectsByCategoryId,
     getProjectDetails
 } from "../models/projects.js";
+
+import {
+    body,
+    validationResult
+} from "express-validator";
+
+// =========================================
+// Validation Rules
+// =========================================
+const categoryValidation = [
+
+    body("categoryName")
+        .trim()
+        .notEmpty()
+        .withMessage("Category name is required")
+        .isLength({ min: 3, max: 100 })
+        .withMessage(
+            "Category name must be between 3 and 100 characters"
+        )
+
+];
 
 // =========================================
 // Categories List Page
@@ -48,6 +70,61 @@ const showCategoryDetailsPage = async (req, res, next) => {
         categoryDetails,
         projects
     });
+};
+
+// =========================================
+// Show New Category Form
+// =========================================
+const showNewCategoryForm = async (req, res) => {
+
+    res.render("new-category", {
+        title: "Create New Category"
+    });
+
+};
+
+// =========================================
+// Process New Category Form
+// =========================================
+const processNewCategoryForm = async (req, res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+        errors.array().forEach(error =>
+            req.flash("error", error.msg)
+        );
+
+        return res.redirect("/new-category");
+    }
+
+    const { categoryName } = req.body;
+
+    try {
+
+        const categoryId =
+            await createCategory(categoryName);
+
+        req.flash(
+            "success",
+            "Category created successfully."
+        );
+
+        res.redirect(`/category/${categoryId}`);
+
+    } catch (error) {
+
+        console.error(error);
+
+        req.flash(
+            "error",
+            "Unable to create category."
+        );
+
+        res.redirect("/new-category");
+    }
+
 };
 
 // =========================================
@@ -107,6 +184,74 @@ const processAssignCategoriesForm = async (req, res) => {
 
 };
 
+// =========================================
+// Show Edit Category Form
+// =========================================
+const showEditCategoryForm = async (req, res) => {
+
+    const categoryId = req.params.id;
+
+    const category =
+        await getCategoryDetails(categoryId);
+
+    res.render("edit-category", {
+        title: "Edit Category",
+        category
+    });
+
+};
+
+// =========================================
+// Process Edit Category Form
+// =========================================
+const processEditCategoryForm = async (req, res) => {
+
+    const categoryId = req.params.id;
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+        errors.array().forEach(error =>
+            req.flash("error", error.msg)
+        );
+
+        return res.redirect(
+            `/edit-category/${categoryId}`
+        );
+    }
+
+    const { categoryName } = req.body;
+
+    try {
+
+        await updateCategory(
+            categoryId,
+            categoryName
+        );
+
+        req.flash(
+            "success",
+            "Category updated successfully."
+        );
+
+        res.redirect(`/category/${categoryId}`);
+
+    } catch (error) {
+
+        console.error(error);
+
+        req.flash(
+            "error",
+            "Unable to update category."
+        );
+
+        res.redirect(
+            `/edit-category/${categoryId}`
+        );
+    }
+
+};
 
 // =========================================
 // Export controller functions
@@ -115,5 +260,10 @@ export {
     showCategoriesPage,
     showCategoryDetailsPage,
     showAssignCategoriesForm,
-    processAssignCategoriesForm
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    showEditCategoryForm,
+    processEditCategoryForm,
+    categoryValidation
 };
