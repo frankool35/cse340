@@ -24,6 +24,7 @@ const categoryValidation = [
 
     body("categoryName")
         .trim()
+        .escape()
         .notEmpty()
         .withMessage("Category name is required")
         .isLength({ min: 3, max: 100 })
@@ -187,12 +188,18 @@ const processAssignCategoriesForm = async (req, res) => {
 // =========================================
 // Show Edit Category Form
 // =========================================
-const showEditCategoryForm = async (req, res) => {
+const showEditCategoryForm = async (req, res, next) => {
 
     const categoryId = req.params.id;
 
     const category =
         await getCategoryDetails(categoryId);
+
+    if (!category) {
+        const err = new Error("Category not found");
+        err.status = 404;
+        return next(err);
+    }
 
     res.render("edit-category", {
         title: "Edit Category",
