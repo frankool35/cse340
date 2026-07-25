@@ -1,18 +1,28 @@
 <%- include("partials/header", { title: title }) %>
 
-    <section class="hero">
-        <img src="/images/cse340-service-network.jpg" alt="Community Service Network">
+    <main>
 
-        <div class="hero-text">
-            <h2>Community Service Portal</h2>
+        <section class="hero">
+            <img src="/images/cse340-service-network.jpg" alt="Community Service Network">
 
+            <div class="hero-text">
+                <h2>Community Service Portal</h2>
+
+                <p>
+                    Welcome to the Community Service Portal. We connect volunteers with
+                    organizations and meaningful service opportunities in the community.
+                </p>
+
+                <a href="/organizations" class="btn">Explore Organizations</a>
+            </div>
+        </section>
+
+        <% if (isLoggedIn) { %>
             <p>
-                Welcome to the Community Service Portal. We connect volunteers with
-                organizations and meaningful service opportunities in the community.
+                <a href="/dashboard">My Dashboard</a>
             </p>
+            <% } %>
 
-            <a href="/organizations" class="btn">Explore Organizations</a>
-        </div>
-    </section>
+    </main>
 
     <%- include("partials/footer") %>

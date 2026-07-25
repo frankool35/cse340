@@ -36,6 +36,17 @@ import {
 
 import { testErrorPage } from "./controllers/errors.js";
 
+import {
+    showUserRegistrationForm,
+    processUserRegistrationForm,
+    showLoginForm,
+    processLoginForm,
+    processLogout,
+    requireLogin,
+    requireRole,
+    showDashboard
+} from "./controllers/users.js";
+
 
 const router = express.Router();
 
@@ -59,22 +70,26 @@ router.get("/project/:id", showProjectDetailsPage);
 // New Project
 router.get(
     "/new-project",
+    requireRole("admin"),
     showNewProjectForm
 );
 
 router.post(
     "/new-project",
+    requireRole("admin"),
     projectValidation,
     processNewProjectForm
 );
 
 router.get(
     "/edit-project/:id",
+    requireRole("admin"),
     showEditProjectForm
 );
 
 router.post(
     "/edit-project/:id",
+    requireRole("admin"),
     projectValidation,
     processEditProjectForm
 );
@@ -91,21 +106,25 @@ router.get("/category/:id", showCategoryDetailsPage);
 // ===============================================
 router.get(
     "/assign-categories/:projectId",
+    requireRole("admin"),
     showAssignCategoriesForm
 );
 
 router.post(
     "/assign-categories/:projectId",
+    requireRole("admin"),
     processAssignCategoriesForm
 );
 
 router.get(
     "/new-category",
+    requireRole("admin"),
     showNewCategoryForm
 );
 
 router.post(
     "/new-category",
+    requireRole("admin"),
     categoryValidation,
     processNewCategoryForm
 );
@@ -113,41 +132,87 @@ router.post(
 
 router.get(
     "/edit-category/:id",
+    requireRole("admin"),
     showEditCategoryForm
 );
 
 router.post(
     "/edit-category/:id",
+    requireRole("admin"),
     categoryValidation,
     processEditCategoryForm
 );
 
 router.get(
     "/new-organization",
+    requireRole("admin"),
     showNewOrganizationForm
 );
 
 router.post(
     "/new-organization",
+    requireRole("admin"),
     organizationValidation,
     processNewOrganizationForm
 );
 
-
 router.get(
     "/edit-organization/:id",
+    requireRole("admin"),
     showEditOrganizationForm
 );
 
 router.post(
     "/edit-organization/:id",
+    requireRole("admin"),
     organizationValidation,
     processEditOrganizationForm
 );
+
+// User Registration
+router.get(
+    "/register",
+    showUserRegistrationForm
+);
+
+router.post(
+    "/register",
+    processUserRegistrationForm
+);
+
+// ===============================
+// User Login
+// ===============================
+router.get(
+    "/login",
+    showLoginForm
+);
+
+router.post(
+    "/login",
+    processLoginForm
+);
+
+router.get(
+    "/logout",
+    processLogout
+);
+
+
+// ===============================
+// Dashboard (Protected)
+// ===============================
+router.get(
+    "/dashboard",
+    requireLogin,
+    showDashboard
+);
+
 
 // ===============================
 // Error Testing
 // ===============================
 router.get("/test-error", testErrorPage);
+
 
 export default router;
