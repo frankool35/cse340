@@ -15,6 +15,8 @@ import {
 import {
     showProjectsPage,
     showProjectDetailsPage,
+    processVolunteer,
+    processRemoveVolunteer,
     showNewProjectForm,
     processNewProjectForm,
     showEditProjectForm,
@@ -67,6 +69,20 @@ router.get("/organization/:id", showOrganizationDetailsPage);
 // ===============================
 router.get("/projects", showProjectsPage);
 router.get("/project/:id", showProjectDetailsPage);
+
+// Volunteer for a project
+router.post(
+    "/project/:id/volunteer",
+    requireLogin,
+    processVolunteer
+);
+
+// Remove volunteer
+router.post(
+    "/project/:id/remove-volunteer",
+    requireLogin,
+    processRemoveVolunteer
+);
 
 // New Project
 router.get(

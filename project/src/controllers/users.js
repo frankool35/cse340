@@ -3,7 +3,11 @@ import {
     createUser,
     authenticateUser,
     getAllUsers
- } from "../models/users.js";
+} from "../models/users.js";
+ 
+import {
+    getVolunteerProjects
+} from "../models/projects.js";
 
 const showUserRegistrationForm = (req, res) => {
 
@@ -161,9 +165,12 @@ const requireLogin = (req, res, next) => {
 
 };
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
 
     const user = req.session.user;
+
+    const volunteerProjects =
+        await getVolunteerProjects(user.user_id);
 
     res.render("dashboard", {
 
@@ -171,7 +178,9 @@ const showDashboard = (req, res) => {
 
         name: user.name,
 
-        email: user.email
+        email: user.email,
+
+        volunteerProjects
 
     });
 

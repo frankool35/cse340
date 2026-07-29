@@ -28,6 +28,41 @@
             </a>
         </p>
 
+        <% if (isLoggedIn) { %>
+        
+            <hr>
+        
+            <% if (!volunteering) { %>
+        
+                <form action="/project/<%= project.project_id %>/volunteer" method="POST">
+        
+                    <button type="submit">
+                        Volunteer for this Project
+                    </button>
+        
+                </form>
+        
+                <% } else { %>
+        
+                    <p>
+                        <strong>
+                            ✓ You are volunteering for this project.
+                        </strong>
+                    </p>
+        
+                    <form action="/project/<%= project.project_id %>/remove-volunteer" method="POST">
+        
+                        <button type="submit">
+                            Remove Volunteer
+                        </button>
+        
+                    </form>
+        
+                    <% } %>
+        
+                        <% } %>
+
+
         <p>
             <strong>Categories:</strong><br>
 
@@ -49,11 +84,15 @@
 
         </p>
 
-        <p>
-            <a href="/assign-categories/<%= project.project_id %>">
-                Assign Categories
-            </a>
-        </p>
+        <% if (user && user.role_name==="admin" ) { %>
+        
+            <p>
+                <a href="/assign-categories/<%= project.project_id %>">
+                    Assign Categories
+                </a>
+            </p>
+        
+            <% } %>
 
         <p>
             <% if (user && user.role_name==="admin" ) { %>
